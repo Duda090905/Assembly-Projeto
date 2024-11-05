@@ -10,7 +10,36 @@ INT 21H
 
 ENDM
 
+IMPRIMIR MACRO MSG
+
+ MOV AH,9
+ LEA DX,MSG
+ INT 21H
+
+ENDM
+
 .DATA 
+JOGO0   DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+        DB    20 DUP(0)                     ; Linha vazia
+
 JOGO1   DB     20 DUP(0)                     ; Linha vazia
         DB     12 DUP(0), 4 DUP(1), 4 DUP(0) ; Linha com encouraçado
         DB     1 DUP(0), 1 DUP(1), 3 DUP(1), 15 DUP(0) ; Linha com fragata
@@ -44,25 +73,41 @@ MAIN PROC
 MOV AX,@DATA
 MOV DS,AX
 
-MOV AH,9
-LEA DX, INICIAL 
-INT 21H
+IMPRIMIR INICIAL
 
 PULA_LINHA    ; Pulando uma linha após a mensagem inicial
 
-MOV AH,9
-LEA DX, INTRODUCAO 
-INT 21H
+IMPRIMIR INTRODUCAO 
 
 PULA_LINHA 
 
-MOV AH,9
-LEA DX, INSTRUCOES 
-INT 21H
+IMPRIMIR INSTRUCOES 
 
 PULA_LINHA 
 
 CALL @IMPRIMIR
+
+PULA_LINHA 
+
+IMPRIMIR LINHAS
+MOV AH,1
+INT 21H
+MOV ? ,AL ;nao sei como passar o valor de al para bx
+
+PULA_LINHA 
+
+IMPRIMIR COLUNAS 
+MOV AH,1
+INT 21H
+MOV ? ,AL ;nao sei como passar o valor de al para si
+
+PULA_LINHA 
+
+COMPARA:
+ CMP JOGO1[BX+SI],1
+ JNE FINALIZA
+ MOV JOGO0[BX+SI],1
+ CALL @IMPRIMIR
 
 FINALIZA:
 MOV AH,4CH
@@ -78,9 +123,12 @@ MAIN ENDP
  XOR SI,SI
  MOV CX,20
  IMPRIME:
- MOV DL,JOGO1[BX+SI]
+ MOV DL,JOGO0[BX+SI]
  OR DL,30h
  INT 21H
+ mov ah,2
+ mov dl,' '
+ int 21h
  INC SI
  LOOP IMPRIME
  push dx
