@@ -11,7 +11,6 @@ INT 21H
 ENDM
 
 .DATA 
-
 JOGO1   DB     20 DUP(0)                     ; Linha vazia
         DB     12 DUP(0), 4 DUP(1), 4 DUP(0) ; Linha com encouraçado
         DB     1 DUP(0), 1 DUP(1), 3 DUP(1), 15 DUP(0) ; Linha com fragata
@@ -28,24 +27,6 @@ JOGO1   DB     20 DUP(0)                     ; Linha vazia
         DB     12 DUP(0), 2 DUP(1), 6 DUP(0) ; Outro ponto de navio
         DB     12 DUP(0), 1 DUP(1), 7 DUP(0) ; Ponto de navio
         DB     4 DUP(20 DUP(0))              ; Quatro linhas vazias
-
-JOGO2   DB     3 DUP(0), 3 DUP(1), 14 DUP(0) ; Linha com encouraçado
-        DB     4 DUP(0), 1 DUP(1), 15 DUP(0) ; Encouraçado separado
-        DB     20 DUP(0)                     ; Linha vazia
-        DB     4 DUP(20 DUP(0))              ; Quatro linhas vazias
-        DB     17 DUP(0), 1 DUP(1), 2 DUP(0) ; Ponto de navio
-        DB     15 DUP(0), 2 DUP(1), 3 DUP(0) ; Fragata de dois pontos
-        DB     15 DUP(0), 2 DUP(1), 3 DUP(0) ; Outro fragmento de fragata
-        DB     20 DUP(0)                     ; Linha vazia
-        DB     20 DUP(0)                     ; Linha vazia
-        DB     4 DUP(0), 1 DUP(1), 15 DUP(0) ; Linha com navio
-        DB     4 DUP(0), 1 DUP(1), 15 DUP(0) ; Ponto de navio separado
-        DB     5 DUP(20 DUP(0))              ; Cinco linhas vazias
-        DB     5 DUP(0), 3 DUP(1), 12 DUP(0) ; Linha com encouraçado na lateral
-        DB     20 DUP(0)                     ; Linha vazia
-        DB     20 DUP(0)                     ; Linha vazia
-        DB     20 DUP(0)                     ; Linha vazia
-        DB     3 DUP(0), 2 DUP(1), 15 DUP(0) ; Final com encouraçado
 
 INICIAL DB 10,13, "VAMOS JOGAR BATALHA NAVAL!!! $"
 
@@ -81,9 +62,33 @@ INT 21H
 
 PULA_LINHA 
 
+CALL @IMPRIMIR
+
 FINALIZA:
 MOV AH,4CH
 INT 21H
 MAIN ENDP 
 
+@IMPRIMIR PROC
+ XOR BX,BX
+ XOR DL,DL
+ MOV DI,20
+ MOV AH,2
+ IMPRIME2:
+ XOR SI,SI
+ MOV CX,20
+ IMPRIME:
+ MOV DL,JOGO1[BX+SI]
+ OR DL,30h
+ INT 21H
+ INC SI
+ LOOP IMPRIME
+ push dx
+ PULA_LINHA
+ pop dx
+ ADD BX,20
+ DEC DI
+ JNZ IMPRIME2
+ RET
+@IMPRIMIR ENDP
 END MAIN
