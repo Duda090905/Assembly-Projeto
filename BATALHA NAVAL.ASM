@@ -19,43 +19,44 @@ IMPRIMIR MACRO MSG
 ENDM
 
 .DATA 
-JOGO0   DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
-        DB    20 DUP(0)                     ; Linha vazia
 
-JOGO1   DB     1 DUP (1),19 DUP(0)                     ; Linha vazia
-        DB     12 DUP(0), 4 DUP(1), 4 DUP(0) ; Linha com encouraçado
-        DB     1 DUP(0), 1 DUP(1), 3 DUP(1), 15 DUP(0) ; Linha com fragata
-        DB     3 DUP(20 DUP(0))              ; Três linhas vazias
-        DB     3 DUP(1), 17 DUP(0)           ; Linha com navio
-        DB     1 DUP(0), 1 DUP(1), 18 DUP(0) ; Ponto isolado de navio
-        DB     4 DUP(20 DUP(0))              ; Quatro linhas vazias
-        DB     9 DUP(0), 2 DUP(1), 9 DUP(0)  ; Outro navio
-        DB     10 DUP(20 DUP(0))             ; Dez linhas vazias
-        DB     11 DUP(0), 1 DUP(1), 8 DUP(0) ; Ponto de navio isolado
-        DB     11 DUP(0), 1 DUP(1), 8 DUP(0) ; Outro ponto isolado
-        DB     2 DUP(20 DUP(0))              ; Duas linhas vazias
-        DB     12 DUP(0), 1 DUP(1), 7 DUP(0) ; Ponto de navio
-        DB     12 DUP(0), 2 DUP(1), 6 DUP(0) ; Outro ponto de navio
-        DB     12 DUP(0), 1 DUP(1), 7 DUP(0) ; Ponto de navio
-        DB     4 DUP(20 DUP(0))              ; Quatro linhas vazias
+ JOGO0  DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+        DB     20 DUP('o')                   ; Linha vazia
+
+JOGO1   DB     6 DUP ('.'),2 DUP('#'),12 DUP('.')  ; Linha vazia
+        DB     12 DUP('.'), 4 DUP('#'), 4 DUP('.') ; Linha com encouraçado
+        DB     2 DUP('.'), 3 DUP('#'), 15 DUP('.') ; Linha com fragata
+        DB     3 DUP(20 DUP('.'))              ; Três linhas vazias
+        DB     3 DUP ('.'),3 DUP('#'), 14 DUP('.')           ; Linha com navio
+        DB     4 DUP('.'), 1 DUP('#'), 15 DUP('.') ; Ponto isolado de navio
+        DB     4 DUP(20 DUP('.'))              ; Quatro linhas vazias
+        DB     9 DUP('.'), 2 DUP('#'), 9 DUP('.')  ; Outro navio
+        DB     10 DUP(20 DUP('.'))             ; Dez linhas vazias
+        DB     11 DUP('.'), 1 DUP('#'), 8 DUP('.') ; Ponto de navio isolado
+        DB     11 DUP('.'), 1 DUP('#'), 8 DUP('.') ; Outro ponto isolado
+        DB     2 DUP(20 DUP('.'))              ; Duas linhas vazias
+        DB     12 DUP('.'), 1 DUP('#'), 7 DUP('.') ; Ponto de navio
+        DB     12 DUP('.'), 2 DUP('#'), 6 DUP('.') ; Outro ponto de navio
+        DB     12 DUP('.'), 1 DUP('#'), 7 DUP('.') ; Ponto de navio
+        DB     4 DUP(20 DUP('.'))              ; Quatro linhas vazias
 
 INICIAL DB 10,13, "VAMOS JOGAR BATALHA NAVAL!!! $"
 
@@ -65,6 +66,14 @@ INSTRUCOES DB 10,13, "PARA JOGAR, EH NECESSARIO QUE SE INSIRA O VALOR DA LINHA E
 LINHAS DB 10,13, "INSIRA A LINHA DESEJADA PARA ATIRAR: $"
 
 COLUNAS DB 10,13, "INSIRA A COLUNA DESEJADA PARA ATIRAR: $"
+
+CONSTANTE EQU 20
+
+ACERTOU DB 10,13,'VC ACERTOU UM BARCO!!$'
+
+ERROU  DB 10,13,'POXA, NAO FOI DESSA VEZ...$'
+
+FINAL DB 10,13,'FIM DE JOGO!$'
 
 .CODE 
 
@@ -87,8 +96,50 @@ PULA_LINHA
 
 CALL @IMPRIMIR
 
-PULA_LINHA 
+PULA_LINHA
 
+CALL RODADAS
+
+IMPRIMIR FINAL 
+
+FINALIZA:
+MOV AH,4CH
+INT 21H
+MAIN ENDP 
+
+@IMPRIMIR PROC
+ PUSH CX
+ XOR BX,BX
+ XOR DL,DL
+ MOV DI,CONSTANTE
+ PULA_LINHA
+ MOV AH,2
+ IMPRIME2:
+ XOR SI,SI
+ MOV CX,CONSTANTE
+ IMPRIME:
+ MOV DL,JOGO0[BX+SI]
+ 
+ INT 21H
+ mov ah,2
+ mov dl,' '
+ int 21h
+ INC SI
+ LOOP IMPRIME
+ push dx
+ PULA_LINHA
+ pop dx
+ ADD BX,CONSTANTE
+ DEC DI
+ JNZ IMPRIME2
+ POP CX
+ RET
+@IMPRIMIR ENDP
+
+RODADAS PROC
+ MOV CX,CONSTANTE
+
+RODADA:
 IMPRIMIR LINHAS
 XOR BX,BX 
 MOV AH,1
@@ -109,43 +160,17 @@ AND SI,0FH
 PULA_LINHA 
 
 COMPARA:
- CMP JOGO1[BX+SI],1
- JNE FINALIZA
- MOV JOGO0[BX+SI],1
+ CMP JOGO1[BX+SI],'#'
+ JNE VAZIO
+ MOV JOGO0[BX+SI],'#'
  CALL @IMPRIMIR
-
-
-
-
-FINALIZA:
-MOV AH,4CH
-INT 21H
-MAIN ENDP 
-
-@IMPRIMIR PROC
- XOR BX,BX
- XOR DL,DL
- MOV DI,20
- PULA_LINHA
- MOV AH,2
- IMPRIME2:
- XOR SI,SI
- MOV CX,20
- IMPRIME:
- MOV DL,JOGO0[BX+SI]
- OR DL,30h
- INT 21H
- mov ah,2
- mov dl,' '
- int 21h
- INC SI
- LOOP IMPRIME
- push dx
- PULA_LINHA
- pop dx
- ADD BX,20
- DEC DI
- JNZ IMPRIME2
+ IMPRIMIR ACERTOU
+ LOOP RODADA
+ VAZIO:
+ MOV JOGO0[BX+SI],'.'
+ CALL @IMPRIMIR
+ IMPRIMIR ERROU
+ LOOP RODADA
  RET
-@IMPRIMIR ENDP
+RODADAS ENDP
 END MAIN
