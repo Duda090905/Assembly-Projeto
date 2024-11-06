@@ -90,16 +90,18 @@ CALL @IMPRIMIR
 PULA_LINHA 
 
 IMPRIMIR LINHAS
+XOR BX,BX 
 MOV AH,1
 INT 21H
-MOV ? ,AL ;nao sei como passar o valor de al para bx
-
+MOV BL ,AL 
 PULA_LINHA 
 
 IMPRIMIR COLUNAS 
+
 MOV AH,1
 INT 21H
-MOV ? ,AL ;nao sei como passar o valor de al para si
+XOR AH,AH  
+MOV SI ,AX 
 
 PULA_LINHA 
 
@@ -108,6 +110,9 @@ COMPARA:
  JNE FINALIZA
  MOV JOGO0[BX+SI],1
  CALL @IMPRIMIR
+
+
+
 
 FINALIZA:
 MOV AH,4CH
