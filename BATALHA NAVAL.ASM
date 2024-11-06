@@ -40,7 +40,7 @@ JOGO0   DB    20 DUP(0)                     ; Linha vazia
         DB    20 DUP(0)                     ; Linha vazia
         DB    20 DUP(0)                     ; Linha vazia
 
-JOGO1   DB     20 DUP(0)                     ; Linha vazia
+JOGO1   DB     1 DUP (1),19 DUP(0)                     ; Linha vazia
         DB     12 DUP(0), 4 DUP(1), 4 DUP(0) ; Linha com encouraçado
         DB     1 DUP(0), 1 DUP(1), 3 DUP(1), 15 DUP(0) ; Linha com fragata
         DB     3 DUP(20 DUP(0))              ; Três linhas vazias
@@ -94,6 +94,8 @@ XOR BX,BX
 MOV AH,1
 INT 21H
 MOV BL ,AL 
+AND BL,0FH
+
 PULA_LINHA 
 
 IMPRIMIR COLUNAS 
@@ -102,6 +104,7 @@ MOV AH,1
 INT 21H
 XOR AH,AH  
 MOV SI ,AX 
+AND SI,0FH
 
 PULA_LINHA 
 
@@ -123,6 +126,7 @@ MAIN ENDP
  XOR BX,BX
  XOR DL,DL
  MOV DI,20
+ PULA_LINHA
  MOV AH,2
  IMPRIME2:
  XOR SI,SI
