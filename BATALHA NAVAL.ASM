@@ -19,7 +19,6 @@ IMPRIMIR MACRO MSG
 ENDM
 
 .DATA 
-
  JOGO0  DB     20 DUP('o')                   ; Linha vazia
         DB     20 DUP('o')                   ; Linha vazia
         DB     20 DUP('o')                   ; Linha vazia
@@ -41,22 +40,26 @@ ENDM
         DB     20 DUP('o')                   ; Linha vazia
         DB     20 DUP('o')                   ; Linha vazia
 
-JOGO1   DB     6 DUP ('.'),2 DUP('#'),12 DUP('.')  ; Linha vazia
-        DB     12 DUP('.'), 4 DUP('#'), 4 DUP('.') ; Linha com encouraçado
-        DB     2 DUP('.'), 3 DUP('#'), 15 DUP('.') ; Linha com fragata
-        DB     3 DUP(20 DUP('.'))              ; Três linhas vazias
-        DB     3 DUP ('.'),3 DUP('#'), 14 DUP('.')           ; Linha com navio
-        DB     4 DUP('.'), 1 DUP('#'), 15 DUP('.') ; Ponto isolado de navio
-        DB     4 DUP(20 DUP('.'))              ; Quatro linhas vazias
-        DB     9 DUP('.'), 2 DUP('#'), 9 DUP('.')  ; Outro navio
-        DB     10 DUP(20 DUP('.'))             ; Dez linhas vazias
-        DB     11 DUP('.'), 1 DUP('#'), 8 DUP('.') ; Ponto de navio isolado
-        DB     11 DUP('.'), 1 DUP('#'), 8 DUP('.') ; Outro ponto isolado
-        DB     2 DUP(20 DUP('.'))              ; Duas linhas vazias
-        DB     12 DUP('.'), 1 DUP('#'), 7 DUP('.') ; Ponto de navio
-        DB     12 DUP('.'), 2 DUP('#'), 6 DUP('.') ; Outro ponto de navio
-        DB     12 DUP('.'), 1 DUP('#'), 7 DUP('.') ; Ponto de navio
-        DB     4 DUP(20 DUP('.'))              ; Quatro linhas vazias
+JOGO1   DB     6  DUP ('.'), 2 DUP ('#'), 12 DUP ('.')      ; Linha com um submarino
+        DB     12 DUP ('.'), 4 DUP ('#'), 4  DUP ('.')      ; Linha com encouraçado
+        DB     2  DUP ('.'), 3 DUP ('#'), 15 DUP ('.')      ; Linha com fragata
+        DB     20 DUP ('.')                                 ; Linha vazia
+        DB     20 DUP ('.')                                 ; Linha vazia
+        DB     20 DUP ('.')                                 ; Linha vazia
+        DB     3  DUP ('.'), 3 DUP ('#'), 14 DUP ('.')      ; Linha com um hidroavião (horizontal)
+        DB     4  DUP ('.'), '#' , 15 DUP ('.')             ; Linha com parte de um hidroavião (horizontal)
+        DB     20 DUP ('.')                                 ; Linha vazia
+        DB     20 DUP ('.')                                 ; Linha vazia
+        DB     20 DUP ('.')                                 ; Linha vazia
+        DB     20 DUP ('.')                                 ; Linha vazia 
+        DB     9  DUP ('.'), 2 DUP ('#'), 9  DUP ('.')      ; Linha com outro Submarino
+        DB     20 DUP ('.')                                 ; Linha vazia
+        DB     15 DUP ('.'), '#' , 4 DUP ('.')              ; Linha com parte do outro hidroavião (vertical)
+        DB     15 DUP ('.'), 2 DUP ('#'), 3  DUP ('.')      ; Linha com outro hidroavião (vertical)
+        DB     15 DUP ('.'), '#' , 4 DUP ('.')              ; Linha com parte do outro hidroavião (vertical)
+        DB     20 DUP ('.')                                 ; Linha vazia
+        DB     20 DUP ('.')                                 ; Linha vazia
+        DB     20 DUP ('.')                                 ; Linha vazia
 
 INICIAL DB 10,13, "VAMOS JOGAR BATALHA NAVAL!!! $"
 
@@ -140,22 +143,15 @@ RODADAS PROC
  MOV CX,CONSTANTE
 
 RODADA:
-IMPRIMIR LINHAS
+CALL ENTDEC
 XOR BX,BX 
-MOV AH,1
-INT 21H
 MOV BL ,AL 
-AND BL,0FH
 
 PULA_LINHA 
 
-IMPRIMIR COLUNAS 
-
-MOV AH,1
-INT 21H
+CALL ENTDEC1
 XOR AH,AH  
-MOV SI ,AX 
-AND SI,0FH
+MOV SI ,AX
 
 PULA_LINHA 
 
@@ -173,4 +169,124 @@ COMPARA:
  LOOP RODADA
  RET
 RODADAS ENDP
+
+ENTDEC PROC
+ PUSH CX
+ PUSH BX
+ PUSH DX
+ENT:
+ 
+ IMPRIMIR LINHAS
+
+ XOR BX,BX
+ XOR CX,CX
+
+ MOV AH,1
+ INT 21H
+
+ CMP AL,'-'
+ JE NEGT
+ CMP AL,'+'
+ JE POST
+ JMP REP
+NEGT:
+ MOV CX,1
+POST:
+ INT 21H
+REP:
+ CMP AL,'0'
+ JNGE NUM
+ CMP AL,'9'
+ JNLE NUM
+ AND AX,000FH
+ PUSH AX
+
+ MOV AX,10
+ MUL BX
+ POP BX
+ ADD BX,AX
+
+ MOV AH,1
+ INT 21H
+ CMP AL,13
+ JNE REP
+
+ MOV AX,BX
+ OR CX,CX
+ JE SAI
+ NEG AX
+ JMP SAI
+NUM:
+ MOV AH,2
+ MOV DL,0DH
+ INT 21H
+ MOV DL,0AH
+ INT 21H
+ JMP ENT
+SAI:
+ POP DX
+ POP BX
+ POP CX
+ RET
+ ENTDEC ENDP
+
+ENTDEC1 PROC
+ PUSH CX
+ PUSH BX
+ PUSH DX
+ENT1:
+ 
+ IMPRIMIR COLUNAS
+
+ XOR BX,BX
+ XOR CX,CX
+
+ MOV AH,1
+ INT 21H
+
+ CMP AL,'-'
+ JE NEGT1
+ CMP AL,'+'
+ JE POST1
+ JMP REP1
+NEGT1:
+ MOV CX,1
+POST1:
+ INT 21H
+REP1:
+ CMP AL,'0'
+ JNGE NUM1
+ CMP AL,'9'
+ JNLE NUM1
+ AND AX,000FH
+ PUSH AX
+
+ MOV AX,10
+ MUL BX
+ POP BX
+ ADD BX,AX
+
+ MOV AH,1
+ INT 21H
+ CMP AL,13
+ JNE REP1
+
+ MOV AX,BX
+ OR CX,CX
+ JE SAI
+ NEG AX
+ JMP SAI
+NUM1:
+ MOV AH,2
+ MOV DL,0DH
+ INT 21H
+ MOV DL,0AH
+ INT 21H
+ JMP ENT
+SAI1:
+ POP DX
+ POP BX
+ POP CX
+ RET
+ ENTDEC1 ENDP
 END MAIN
