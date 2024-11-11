@@ -20,47 +20,28 @@ ENDM
 
 .DATA 
 
- JOGO0  DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
-        DB     20 DUP('o')                   ; Linha vazia
+ JOGO0  DB     10 DUP('o')                   ; Linha vazia
+        DB     10 DUP('o')                   ; Linha vazia
+        DB     10 DUP('o')                   ; Linha vazia
+        DB     10 DUP('o')                   ; Linha vazia
+        DB     10 DUP('o')                   ; Linha vazia
+        DB     10 DUP('o')                   ; Linha vazia
+        DB     10 DUP('o')                   ; Linha vazia
+        DB     10 DUP('o')                   ; Linha vazia
+        DB     10 DUP('o')                   ; Linha vazia
+        DB     10 DUP('o')                   ; Linha vazia
 
-JOGO1   DB     6  DUP ('.'), 2 DUP ('#'), 12 DUP ('.')      ; Linha com um submarino
-        DB     12 DUP ('.'), 4 DUP ('#'), 4  DUP ('.')      ; Linha com encouraçado
-        DB     2  DUP ('.'), 3 DUP ('#'), 15 DUP ('.')      ; Linha com fragata
-        DB     20 DUP ('.')                                 ; Linha vazia
-        DB     20 DUP ('.')                                 ; Linha vazia
-        DB     20 DUP ('.')                                 ; Linha vazia
-        DB     3  DUP ('.'), 3 DUP ('#'), 14 DUP ('.')      ; Linha com um hidroavião (horizontal)
-        DB     4  DUP ('.'), '#' , 15 DUP ('.')             ; Linha com parte de um hidroavião (horizontal)
-        DB     20 DUP ('.')                                 ; Linha vazia
-        DB     20 DUP ('.')                                 ; Linha vazia
-        DB     20 DUP ('.')                                 ; Linha vazia
-        DB     20 DUP ('.')                                 ; Linha vazia 
-        DB     9  DUP ('.'), 2 DUP ('#'), 9  DUP ('.')      ; Linha com outro Submarino
-        DB     20 DUP ('.')                                 ; Linha vazia
-        DB     15 DUP ('.'), '#' , 4 DUP ('.')              ; Linha com parte do outro hidroavião (vertical)
-        DB     15 DUP ('.'), 2 DUP ('#'), 3  DUP ('.')      ; Linha com outro hidroavião (vertical)
-        DB     15 DUP ('.'), '#' , 4 DUP ('.')              ; Linha com parte do outro hidroavião (vertical)
-        DB     20 DUP ('.')                                 ; Linha vazia
-        DB     20 DUP ('.')                                 ; Linha vazia
-        DB     20 DUP ('.')                                 ; Linha vazia
+
+JOGO1   DB     10 DUP ('.')                                              ;LINHA VAZIA
+        DB     3  DUP ('.'), 4 DUP ('#'), 2  DUP ('.'), '#'              ;LINHA COM ENCOURAÇADO(HORIZONTAL) E PARTE DO SUBMARINO 1(VERTICAL)
+        DB     9  DUP ('.'), "#"                                         ;LINHA COM A OUTRA PARTE DO SUBMARINO 1(VERTICAL)
+        DB     '.', '#', 8 DUP('.')                                      ;LINHA COM PARTE1 DO HIDROAVIÃO 1(VERTICAL)
+        DB     '.', 2 DUP ('#'), 2 DUP ('.'), 3 DUP ('#'), 2 DUP ('.')   ;LINHA COM PARTE2 DO HIDROAVIÃO 1(VERTICAL) E FRAGATA(HORIZONTAL)
+        DB     '.', '#', 8 DUP ('.')                                     ;LINHA COM PARTE3 DO HIDROAVIÃO 1(VERTICAL)
+        DB     10 DUP ('.')                                              ;LINHA VAZIA
+        DB     6  DUP ('.'), 3 DUP ('#'), '.'                            ;LINHA COM PARTE1 DO HIDROAVIÃO 2(HORIZONTAL)
+        DB     2  DUP ('.'), 2 DUP ('#'), 3 DUP ('.'), '#', 2 DUP ('.')  ;LINHA COM SUBMARINO 2(HORIZONTAL) E PARTE2 DO HIDROAVIÃO 2(HORIZONTAL)
+        DB     10 DUP ('.')                                              ;LINHA VAZIA
 
 INICIAL DB 10,13, "VAMOS JOGAR BATALHA NAVAL!!! $"
 
@@ -71,7 +52,7 @@ LINHAS DB 10,13, "INSIRA A LINHA DESEJADA PARA ATIRAR: $"
 
 COLUNAS DB 10,13, "INSIRA A COLUNA DESEJADA PARA ATIRAR: $"
 
-CONSTANTE EQU 20
+CONSTANTE EQU 10
 
 ACERTOU DB 10,13,'VC ACERTOU UM BARCO!!$'
 
@@ -79,7 +60,7 @@ ERROU  DB 10,13,'POXA, NAO FOI DESSA VEZ...$'
 
 FINAL DB 10,13,'FIM DE JOGO!$'
 
-DECO DB 10,13,'...........................................................$'
+DECO DB 10,13,'............................$'
 
 
 .CODE 
