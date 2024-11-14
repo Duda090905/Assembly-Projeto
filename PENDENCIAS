@@ -18,11 +18,12 @@
 ; (#)ORGANIZAR O PROGRAMA, A FORMATAÇÃO, PADRONIZAR
 ; ( )FAZER DOCS
 ; (#) MAIS JOGOS
-; () OPCOES DE ESCOLHAS (5)
-; () LIMPA TELA
+; ( ) OPCOES DE ESCOLHAS (5) 
+; ( ) LIMPA TELA
+; ( ) DEIXAR TUDO NO MEIO USANDO TAB OU SLIDE 13
 ; (#) ESCOLHE SE QUER COMECAR OU NAO 
 ; (#) LIMITE? 
 ; (#) VERSAO CORRETA CASO LIMITE
-; () QUER JOGAR DE NOVO SIM OU NAO          
-; ()verificar o comando de impressão dentro de loop
+; (#) QUER JOGAR DE NOVO SIM OU NAO          
+; ( )verificar o comando de impressão dentro de loop
 ; (#)MATRIZ 10X10 OU 20X20

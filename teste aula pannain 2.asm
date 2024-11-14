@@ -28,14 +28,6 @@ ESPAÇO MACRO
 
 ENDM
 
-TIPO MACRO
-    STD 
-    LEA SI,NUMJOGO+8h 
-    LEA DI,NUMJOGO+0Ah  
-    MOV CX,AL
-    REP MOVSW 
-    MOV WORD PTR [DI],3
-ENDM
 
 .DATA 
 
@@ -136,7 +128,12 @@ LATERAIS DB ?
 
 OPÇÕES DB 13,10,'ESCOLHA UM TIPO DE JOGO(1-5):$'
 
-NUMJOGO DB 'J','O','G','O',?
+NUMJOGO DB 'J','O','G','O',?,'$'
+
+DENOVO DB 13,10,'QUER JOGAR NOVAMENTE? DIGITE S PARA SIM E N PARA NAO: $'
+
+RESTANTE DB 13,10,'FALTAM$'
+RESTANTES DB 13,10,'RODADAS$'
 
 .CODE 
 
@@ -146,6 +143,7 @@ MAIN PROC
     MOV DS,AX
     MOV ES,AX
 
+INICIO:
 IMPRIMIR INICIAL
 
 PULA_LINHA    
@@ -161,6 +159,7 @@ PULA_LINHA
 IMPRIMIR COMECO 
 
 CALL @START
+CALL @ESCOLHA
 
 PULA_LINHA
 
@@ -169,7 +168,15 @@ CALL RODADAS
 
 PULA_LINHA
 
+IMPRIMIR DENOVO
+MOV AH,1
+INT 21H
+CMP AL,'S'
+JNE FINALIZA
+PULA_LINHA
+JMP INICIO
 FINALIZA:
+    IMPRIMIR FINAL
     MOV AH,4CH
     INT 21H
 MAIN ENDP 
@@ -184,16 +191,11 @@ VOLTAR:
     CMP AL,'1'          ; Compara com o caractere ASCII '1' (49)
     JE COMECA           ; Se for igual a '1', vai para COMECA
     CMP AL,'0'          ; Compara com o caractere ASCII '0' (48)
-    JE FIM              ; Se for igual a '0', vai para FIM
+    JE FINALIZA             ; Se for igual a '0', vai para FIM
 
     ; Mensagem de erro, entrada inválida
     IMPRIMIR INCORRETO
     JMP VOLTAR           ; Volta para pedir nova entrada
-
-FIM:
-    IMPRIMIR FINAL
-    MOV AH,4CH          ; Finaliza o programa
-    INT 21H
 
 COMECA:
     RET                 ; Retorna para o fluxo principal após entrada válida
@@ -207,13 +209,16 @@ COMECA:
 PULO:
     INT 21h
     CMP AL, '1'        ; Verifica se o caractere é um dígito
-    JGE NUM
+    JGE @HUM
     CMP AL, '5'
-    JLE NUM
+    JLE @HUM
     IMPRIMIR INCORRETO
     JMP PULO
-NUM:
-    
+@HUM:
+    STD 
+    LEA DI,NUMJOGO+4 
+    MOV BYTE PTR [DI],AL
+    ;ou MOV ARR+4,AL
     POP CX
     RET
 @ESCOLHA ENDP
@@ -291,10 +296,13 @@ IMPRIME:
 @IMPRIMIR ENDP
 
 RODADAS PROC
-
-    MOV CX,2
-
+  MOV CX,2
 RODADA:
+IMPRIMIR RESTANTE
+
+IMPRIMIR RESTANTES
+PULA_LINHA
+
 IMPRIMIR LINHAS
     MOV AH,1
     INT 21H
