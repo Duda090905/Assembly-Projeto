@@ -242,7 +242,62 @@ PULA_LINHA
 IMPRIMIR COMECO 
 
 CALL @START
+<<<<<<< HEAD
 CALL ESCOLHA
+=======
+
+
+    PUSH CX
+    PULA_LINHA
+    IMPRIMIR OPÇÕES
+
+ESCOLHER_JOGO:
+    MOV AH, 1
+    INT 21h
+    CMP AL, '1'
+    JE ESCOLHA_JOGO1
+    CMP AL, '2'
+    JE ESCOLHA_JOGO2
+    CMP AL, '3'
+    JE ESCOLHA_JOGO3
+    CMP AL, '4'
+    JE ESCOLHA_JOGO4
+    CMP AL, '5'
+    JE ESCOLHA_JOGO5
+
+    ; Entrada inválida: repetir a pergunta
+    IMPRIMIR INCORRETO
+    JMP ESCOLHER_JOGO
+
+ESCOLHA_JOGO1:
+    LEA SI, JOGO1
+    JMP COPIA_JOGO
+
+ESCOLHA_JOGO2:
+    LEA SI, JOGO2
+    JMP COPIA_JOGO
+
+ESCOLHA_JOGO3:
+    LEA SI, JOGO3
+    JMP COPIA_JOGO
+
+ESCOLHA_JOGO4:
+    LEA SI, JOGO4
+    JMP COPIA_JOGO
+
+ESCOLHA_JOGO5:
+    LEA SI, JOGO5
+
+COPIA_JOGO:
+    LEA DI, JOGOESCOLHIDO
+    MOV CX, 100          ; Copiar 100 bytes (10x10)
+    REP MOVSB            ; Copiar conteúdo de [SI] para [DI]
+
+    ; Finaliza a escolha e retorna ao fluxo principal
+    JMP ESCOLHAFIM
+
+ESCOLHAFIM:
+>>>>>>> af99f4638e75b9ed801e7cf5bc9d3a5c9a0132cf
 
 LIMPA
 SOBE 
