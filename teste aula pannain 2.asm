@@ -68,28 +68,20 @@ SOBE MACRO
     mov dx, 0         ; Linha 0 (primeira linha)
     int 10h           ; Chamada da interrupção para posicionar o cursor
 ENDM
-TAB1 MACRO
-    PUSH AX 
-    PUSH DX
-    MOV AH,2
-    MOV BH,0
-    MOV DH,4
-    MOV DL, 29          ; Coluna central para início da mensagem
-    INT 10H
-    POP DX
-    POP AX
-ENDM
 
-TAB MACRO
-    PUSH AX 
+TABFAKE MACRO
+    PUSH CX
+    PUSH AX
     PUSH DX
-    MOV AH, 02H          ; Função para mover o cursor
-    MOV BH, 0            ; Página de vídeo 0
-    MOV DH, 6          ; Linha central da tela
-    MOV DL, 26           ; Coluna central para início da mensagem
-    INT 10H              ; Move o cursor para a posição central
+    MOV CX,26
+@FAKE:
+    MOV AH,2
+    MOV DL,' '
+    INT 21H
+    LOOP @FAKE
     POP DX
-    POP AX
+    POP AX 
+    POP CX
 ENDM
 .DATA 
 
@@ -342,7 +334,7 @@ ESCOLHA ENDP
     XOR BX,BX
     MOV CX,CONSTANTE
     PULA_LINHA
-    TAB1
+    TABFAKE
 @DECO:
 
     MOV AX,BX
@@ -372,12 +364,9 @@ CONTINUA:
     MOV DI,CONSTANTE
     PULA_LINHA
     mov LATERAIS,41h
-    TAB
     IMPRIME2:
+    TABFAKE
     MOV AH,2
-    INC DH
-    MOV DL,26
-    PUSH DX
     MOV DL,LATERAIS
     INT 21H
     ADD LATERAIS,1
@@ -398,8 +387,6 @@ IMPRIME:
     LOOP IMPRIME
     PULA_LINHA
     ADD BX,CONSTANTE
-    POP DX
-    INT 10H
     DEC DI
     JNZ IMPRIME2
     POP CX
