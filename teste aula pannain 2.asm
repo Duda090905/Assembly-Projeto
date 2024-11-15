@@ -125,6 +125,16 @@ JOGO5   DB     2 DUP ('#'),8 DUP ('.')
         DB     4 DUP ('.'), 2 DUP ('#'), 4 DUP ('.')
         DB     3 DUP ('#'), 2 DUP ('.'), '#', 4 DUP ('.')
 
+JOGOESCOLHIDO       DB 10 DUP (?)
+                    DB 10 DUP (?)
+                    DB 10 DUP (?)
+                    DB 10 DUP (?)
+                    DB 10 DUP (?)
+                    DB 10 DUP (?)
+                    DB 10 DUP (?)
+                    DB 10 DUP (?)
+                    DB 10 DUP (?)
+                    DB 10 DUP (?)
 
 
 INICIAL DB 10,13, "                         VAMOS JOGAR BATALHA NAVAL!!! $"
@@ -168,6 +178,7 @@ MAIN PROC
 
     MOV AX,@DATA
     MOV DS,AX
+    MOV ES,AX 
 
 INICIO:
 LIMPA
@@ -186,9 +197,62 @@ PULA_LINHA
 
 IMPRIMIR COMECO 
 
-
 CALL @START
-;CALL @ESCOLHA
+
+
+ PUSH CX
+    PULA_LINHA
+    IMPRIMIR OPÇÕES
+
+ESCOLHER_JOGO:
+    MOV AH, 1
+    INT 21h
+    CMP AL, '1'
+    JE ESCOLHA_JOGO1
+    CMP AL, '2'
+    JE ESCOLHA_JOGO2
+    CMP AL, '3'
+    JE ESCOLHA_JOGO3
+    CMP AL, '4'
+    JE ESCOLHA_JOGO4
+    CMP AL, '5'
+    JE ESCOLHA_JOGO5
+
+    ; Entrada inválida: repetir a pergunta
+    IMPRIMIR INCORRETO
+    JMP ESCOLHER_JOGO
+
+ESCOLHA_JOGO1:
+    LEA SI, JOGO1
+    JMP COPIA_JOGO
+
+ESCOLHA_JOGO2:
+    LEA SI, JOGO2
+    JMP COPIA_JOGO
+
+ESCOLHA_JOGO3:
+    LEA SI, JOGO3
+    JMP COPIA_JOGO
+
+ESCOLHA_JOGO4:
+    LEA SI, JOGO4
+    JMP COPIA_JOGO
+
+ESCOLHA_JOGO5:
+    LEA SI, JOGO5
+
+COPIA_JOGO:
+    LEA DI, JOGOESCOLHIDO
+    MOV CX, 100          ; Copiar 100 bytes (10x10)
+    REP MOVSB            ; Copiar conteúdo de [SI] para [DI]
+
+    ; Finaliza a escolha e retorna ao fluxo principal
+    JMP ESCOLHAFIM
+
+ESCOLHAFIM:
+
+
+
 LIMPA
 SOBE 
 PULA_LINHA
@@ -233,32 +297,8 @@ COMECA:
 
 @START ENDP
 
-@ESCOLHA PROC
-    PUSH CX
-    PULA_LINHA
-    IMPRIMIR OPÇÕES
-PULO:
-    MOV AH,1
-    INT 21h
-    CMP AL, '1'        ; Verifica se o caractere é um dígito
-    JNE SALT2
-SALT2:
-    CMP AL, '2'
-    JNE SALT3
-SALT3:
-    CMP AL, '3'
-    JNE SALT4
-SALT4:
-    CMP AL, '4'
-    JNE SALT5
-SALT5:
-    CMP AL, '5'
-    JNE ACAB
-ACAB:
-    IMPRIMIR INCORRETO
-    JMP PULO
-    RET
-@ESCOLHA ENDP
+
+
 
 @COORDENADAS PROC
     PUSH CX
@@ -364,7 +404,7 @@ PULA_LINHA
 PULA_LINHA 
 
 COMPARA:
-    CMP JOGO1[BX+SI],'#'
+    CMP JOGOESCOLHIDO[BX+SI],'#'
     JNE VAZIO
     MOV JOGO0[BX+SI],'#'
     CALL @IMPRIMIR
