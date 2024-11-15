@@ -1,7 +1,8 @@
+TITLE PROJETO FINAL (BATALHA NAVAL)
 .MODEL SMALL
 .STACK 100H
 
-PULA_LINHA MACRO             ;MACRO CUJA FUNCAO PULA A LINHA
+PULA_LINHA MACRO   ;MACRO CUJA FUNCAO PULA A LINHA
 
     MOV AH,2                 
     MOV DL,10 
@@ -9,7 +10,7 @@ PULA_LINHA MACRO             ;MACRO CUJA FUNCAO PULA A LINHA
 
 ENDM
 
-IMPRIMIR MACRO MSG           ;MACRO CUJA FUNCAO EH IMPRESSAO DE ALGUMA DETERMINADA STRING
+IMPRIMIR MACRO MSG  ;MACRO CUJA FUNCAO EH IMPRESSAO DE ALGUMA DETERMINADA STRING
 
     MOV AH,9
     LEA DX,MSG
@@ -17,7 +18,7 @@ IMPRIMIR MACRO MSG           ;MACRO CUJA FUNCAO EH IMPRESSAO DE ALGUMA DETERMINA
 
 ENDM
 
-ESPAÇO MACRO                 ;MACRO CUJA FUNCAO EH DAR ESPACO
+ESPAÇO MACRO         ;MACRO CUJA FUNCAO EH DAR ESPACO
     PUSH AX
     PUSH DX
     MOV AH,2
@@ -28,7 +29,7 @@ ESPAÇO MACRO                 ;MACRO CUJA FUNCAO EH DAR ESPACO
 
 ENDM
 
-LIMPA MACRO        ;MACRO CUJA FUNCAO EH LIMPAR A TELA
+LIMPA MACRO           ;MACRO CUJA FUNCAO EH LIMPAR A TELA
     
     MOV AH, 06h       ; SCROLL UP
     MOV AL, 0         ; LINHAS:0 (PARA LIMPAR A TELA INTEIRA)
@@ -49,14 +50,14 @@ SOBE MACRO            ;MACRO CUJA FUNCAO EH VOLTAR AO INICIO DA PAGINA
 
 ENDM
 
-TABFAKE1 MACRO             ;MACRO CUJA FUNCAO EH SIMULAR UMA CENTRALIZACAO 
+TABFAKE1 MACRO        ;MACRO CUJA FUNCAO EH SIMULAR UMA CENTRALIZACAO 
 
     PUSH CX
     PUSH AX
     PUSH DX
-    MOV CX,29         ;DISTANCIA DE 29
+    MOV CX,29          ;DISTANCIA DE 29
 
-@FAKE1
+@FAKE1:
 
     MOV AH,2
     MOV DL,' '
@@ -68,12 +69,12 @@ TABFAKE1 MACRO             ;MACRO CUJA FUNCAO EH SIMULAR UMA CENTRALIZACAO
 
 ENDM
 
-TABFAKE2 MACRO        ;MACRO 2 PARA SIMULAR OUTRO TIPO DE CENTRALIZACAO
+TABFAKE2 MACRO          ;MACRO 2 PARA SIMULAR OUTRO TIPO DE CENTRALIZACAO
 
     PUSH CX
     PUSH AX
     PUSH DX
-    MOV CX,26        ;DISTANCIA DE 26
+    MOV CX,26           ;DISTANCIA DE 26
 
 @FAKE2:
     MOV AH,2
@@ -133,38 +134,38 @@ JOGO2   DB     2 DUP ('3'), 5 DUP('.'), 3 DUP ('4')                      ;LINHA 
         DB     3 DUP ('2'), 6 DUP ('.'), '1'                             ;LINHA COM O FRAGATA (HORIZONTAL) E COM PARTE3 DO ENCOURACADO (VERTICAL)
         DB     9 DUP ('.'), '1'                                          ;LINHA COM PARTE4 DO ENCOURACADO (VERTICAL)
 
-JOGO3   DB     6 DUP ('.'), 2 DUP ('3'), 2 DUP ('.')                      
-        DB     3 DUP ('4'), 7 DUP ('.')
-        DB     '.','4', 7 DUP ('.'), '2'
-        DB     9 DUP ('.'), '2' 
-        DB     9 DUP ('.'), '2'   
-        DB     2 DUP ('.'), 4 DUP ('1'), 4 DUP ('.')
-        DB     10 DUP ('.')
-        DB     10 DUP ('.')
-        DB     '3', 7 DUP ('.'), '4', '.'
-        DB     '3', 6 DUP ('.'),3 DUP ('4')
+JOGO3   DB     6 DUP ('.'), 2 DUP ('3'), 2 DUP ('.')                     ;LINHA COM SUBMARINO1 (HORIZONTAL) 
+        DB     3 DUP ('4'), 7 DUP ('.')                                  ;LINHA COM PARTE1 DO HIDROAVIÃO1 (HORIZONTAL)
+        DB     '.','4', 7 DUP ('.'), '2'                                 ;LINHA COM PARTE2 DO HIDROAVIÃO1 (HORIZONTAL) E COM PARTE1 DO FRAGATA (VERTICAL)
+        DB     9 DUP ('.'), '2'                                          ;LINHA COM PARTE2 DO FRAGATA (VERTICAL)
+        DB     9 DUP ('.'), '2'                                          ;LINHA COM PARTE3 DO FRAGATA (VERTICAL)
+        DB     2 DUP ('.'), 4 DUP ('1'), 4 DUP ('.')                     ;LINHA COM ENCOURACADO (HORIZONTAL)
+        DB     10 DUP ('.')                                              ;LINHA VAZIA
+        DB     10 DUP ('.')                                              ;LINHA VAZIA
+        DB     '3', 7 DUP ('.'), '4', '.'                                ;LINHA COM PARTE1 DO SUBMARINO2 (VERTICAL) E COM PARTE1 DO HIDROAVIÃO2 (HORIZONTAL)
+        DB     '3', 6 DUP ('.'),3 DUP ('4')                              ;LINHA COM PARTE2 DO SUBMARINO2 (VERTICAL) E COM PARTE2 DO HIDROAVIÃO2 (HORIZONTAL)
 
-JOGO4   DB     5 DUP ('.'),'2', 4 DUP ('.')
-        DB     '.', 2 DUP ('3'), 2 DUP ('.'),'2', 4 DUP ('.')
-        DB     5 DUP ('.'),'2', 4 DUP ('.')
-        DB     8 DUP ('.'), '4', '.'
-        DB     7 DUP ('.'), 2 DUP ('4'), '.'  
-        DB     '1', 2 DUP ('.'), '4', 4 DUP ('.'), '4', '.'
-        DB     '1', '.', 3 DUP ('4'), 5 DUP ('.')
-        DB     '1',9 DUP ('.')
-        DB     '1', 5 DUP ('.'), 2 DUP ('3'), 2 DUP ('.')
-        DB     10 DUP ('.')
+JOGO4   DB     5 DUP ('.'),'2', 4 DUP ('.')                              ;LINHA COM PARTE1 DO FRAGATA (VERTICAL)
+        DB     '.', 2 DUP ('3'), 2 DUP ('.'),'2', 4 DUP ('.')            ;LINHA COM SUBMARINO1 (HORIZONTAL) E COM PARTE2 DO FRAGATA (VERTICAL)
+        DB     5 DUP ('.'),'2', 4 DUP ('.')                              ;LINHA COM PARTE3 DO FRAGATA (VERTICAL)
+        DB     8 DUP ('.'), '4', '.'                                     ;LINHA COM PARTE1 DO HIDROAVIÃO1 (VERTICAL)
+        DB     7 DUP ('.'), 2 DUP ('4'), '.'                             ;LINHA COM PARTE2 DO HIDROAVIÃO1 (VERTICAL)
+        DB     '1', 2 DUP ('.'), '4', 4 DUP ('.'), '4', '.'              ;LINHA COM PARTE1 DO ENCOURACADO (VERTICAL), COM PARTE1 DO HIDROAVIÃO2 (HORIZONTAL) E PARTE3 DO HIDROAVIÃO1 (VERTICAL)
+        DB     '1', '.', 3 DUP ('4'), 5 DUP ('.')                        ;LINHA COM PARTE2 DO ENCOURACADO (VERTICAL) E COM PARTE2 DO HIDROAVIÃO2
+        DB     '1',9 DUP ('.')                                           ;LINHA COM PARTE3 DO ENCOURACADO (VERTICAL)
+        DB     '1', 5 DUP ('.'), 2 DUP ('3'), 2 DUP ('.')                ;LINHA COM PARTE4 DO ENCOURACADO (VERTICAL)
+        DB     10 DUP ('.')                                              ;LINHA VAZIA
 
-JOGO5   DB     2 DUP ('3'),8 DUP ('.')
-        DB     10 DUP ('.')
-        DB     2 DUP ('.'),'1','.', 3 DUP ('4'), 3 DUP ('.')
-        DB     2 DUP ('.'),'1',2 DUP ('.'), '4', 4 DUP ('.')
-        DB     2 DUP ('.'),'1',7 DUP ('.')  
-        DB     '3','.','1',7 DUP ('.')
-        DB     '3',9 DUP ('.')
-        DB     5 DUP ('.'), '4', 4 DUP ('.')
-        DB     4 DUP ('.'), 2 DUP ('4'), 4 DUP ('.')
-        DB     3 DUP ('2'), 2 DUP ('.'), '4', 4 DUP ('.')
+JOGO5   DB     2 DUP ('3'),8 DUP ('.')                                   ;LINHA COM SUBMARINO1 (HORIZONTAL)
+        DB     10 DUP ('.')                                              ;LINHA VAZIA
+        DB     2 DUP ('.'),'1','.', 3 DUP ('4'), 3 DUP ('.')             ;LINHA COM PARTE1 DO ENCOURACADO (VERTICAL) E COM PARTE1 DO HIDROAVIÃO1 (HORIZONTAL)
+        DB     2 DUP ('.'),'1',2 DUP ('.'), '4', 4 DUP ('.')             ;LINHA COM PARTE2 DO ENCOURACADO (VERTICAL) E COM PARTE2 DO HIDROAVIÃO1 (HORIZONTAL)
+        DB     2 DUP ('.'),'1',7 DUP ('.')                               ;LINHA COM PARTE3 DO ENCOURACADO (VERTICAL)
+        DB     '3','.','1',7 DUP ('.')                                   ;LINHA COM PARTE1 DO SUBMARINO2 (VERTICAL) E COM PARTE4 DO ENCOURACADO (VERTICAL)
+        DB     '3',9 DUP ('.')                                           ;LINHA COM PARTE2 DO SUBMARINO2 (VERTICAL)
+        DB     5 DUP ('.'), '4', 4 DUP ('.')                             ;LINHA COM PARTE1 DO HIDROAVIÃO2 (VERTICAL)
+        DB     4 DUP ('.'), 2 DUP ('4'), 4 DUP ('.')                     ;LINHA COM PARTE2 DO HIDROAVIÃO2 (VERTICAL)
+        DB     3 DUP ('2'), 2 DUP ('.'), '4', 4 DUP ('.')                ;LINHA COM FRAGATA (HORIZONTAL) E COM PARTE3 DO HIDROAVIÃO2 (VERTICAL)
 
 
 ;MATRIZ QUE RECEBE O JOGO QUE SERA ESCOLHIDO PELO USUARIO
@@ -227,6 +228,7 @@ RESTANTE DB 13,10,'                          NUMERO DE RODADAS RESTANTES: $'
 
 .CODE 
 
+;PROCEDIMENTO PRINCIPAL
 MAIN PROC  
 
     MOV AX,@DATA                       ;INICIALIZACAO DO SEGMENTO DE DADOS
@@ -235,57 +237,60 @@ MAIN PROC
 
 INICIO:
 
-LIMPA                                   ;CHAMADA DE DIFERENTES TIPOS DE MACROS 
-SOBE 
-IMPRIMIR INICIAL
+    LIMPA                                   ;CHAMADA DE DIFERENTES TIPOS DE MACROS 
+    SOBE 
+    IMPRIMIR INICIAL
 
-PULA_LINHA    
+    PULA_LINHA    
 
-IMPRIMIR INTRODUCAO                     ;IMPRIME A STRING INTRODUCAO
+    IMPRIMIR INTRODUCAO                     ;IMPRIME A STRING INTRODUCAO
 
-PULA_LINHA 
+    PULA_LINHA 
 
-IMPRIMIR INSTRUCOES                     ;IMPRIME A STRING INSTRUCOES 
+    IMPRIMIR INSTRUCOES                     ;IMPRIME A STRING INSTRUCOES 
 
-PULA_LINHA 
+    PULA_LINHA 
 
-IMPRIMIR COMECO                         ;IMPRIME A STRING COMECO
+    IMPRIMIR COMECO                         ;IMPRIME A STRING COMECO
 
 ;CHAMADA DE DIFERENTES PROCEDIMENTOS
 
 
-CALL @START                              ;CHAMADA DO PROCEDIMENTO CUJA FUNCAO EH INICIAR O JOGO OU NAO DE ACORDO COM O USUARIO                 
-CALL ESCOLHA                             ;CHAMADA DO PROCEDIMENTO CUJA FUNCAO EH A ESCOLHA DE QUAL JOGO SERA UTILIZADO
+    CALL @START                              ;CHAMADA DO PROCEDIMENTO CUJA FUNCAO EH INICIAR O JOGO OU NAO DE ACORDO COM O USUARIO                 
+    CALL ESCOLHA                             ;CHAMADA DO PROCEDIMENTO CUJA FUNCAO EH A ESCOLHA DE QUAL JOGO SERA UTILIZADO
 
-LIMPA
-SOBE 
-PULA_LINHA
+    LIMPA
+    SOBE 
+    PULA_LINHA
 
-CALL @IMPRIMIR                           ;CHAMADA DO PROCEDIMENTO CUJA FUNCAO EH A IMPRESSAO DA MATRIZ JOGO0 (ACERTOS E ERROS DO USUARIO)
-CALL RODADAS                             ;CHAMADA DO PROCEDIMENTO CUJA FUNCAO EH RESOLVER QUESTOES RELACIONADAS AS RODADAS DA PARTIDA
+    CALL @IMPRIMIR                           ;CHAMADA DO PROCEDIMENTO CUJA FUNCAO EH A IMPRESSAO DA MATRIZ JOGO0 (ACERTOS E ERROS DO USUARIO)
+    CALL RODADAS                             ;CHAMADA DO PROCEDIMENTO CUJA FUNCAO EH RESOLVER QUESTOES RELACIONADAS AS RODADAS DA PARTIDA
 
 PULA_LINHA
 
 IMPRIMIR DENOVO                          ;MACRO QUE IMPRIME A STRING DENOVO 
-
-MOV AH,1                                 ;PERGUNTA SE O USUARIO QUER JOGAR DE NOVO OU NAO (S OU N)
-INT 21H
-CMP AL,'S'                               ;SE S (SIM)
-JNE FINALIZA                             
-LIMPA
-SOBE 
-JMP INICIO                               ;COMECA NOVAMENTE
+DNV:
+    MOV AH,1                                 ;PERGUNTA SE O USUARIO QUER JOGAR DE NOVO OU NAO (S OU N)
+    INT 21H
+    CMP AL,'S'                               ;SE S (SIM),CONTINUA
+    JNE FINALIZA                             ;SE N (NÃO),PULA PARA 'FINALIZA'
+    LIMPA                       
+    SOBE 
+    JMP INICIO                               ;COMECA NOVAMENTE
 FINALIZA:
-     
-    CMP AL,'N'
-    JNE 
+
+    CMP AL,'N'                               ;SE IGUAL A 'N', CONTINUA
+    JE CONTI
+    IMPRIMIR INCORRETO                       ;SE NÃO, IMPRIME A STRING 'INCORRETO' E PEDE PARA O USUARIO DIGITAR O CORRETO NOVAMENTE
+    JMP DNV                                 
+CONTI:
     LIMPA                   
     SOBE       
-    MOV AH,2
-    MOV DH,12
+    MOV AH,2 
+    MOV DH,12                                ;CENTRALIZA A MENSAGEM
     INT 10H
-    IMPRIMIR FINAL
-    MOV AH,4CH
+    IMPRIMIR FINAL                           ;IMPRIME A STRING 'FINAL'
+    MOV AH,4CH                               ;FINALIZA O PROGRAMA
     INT 21H
 MAIN ENDP 
 
@@ -363,7 +368,7 @@ ESCOLHA ENDP
     XOR BX,BX
     MOV CX,CONSTANTE
     PULA_LINHA
-    TAB
+    TABFAKE1
 @DECO:
     MOV AX,BX
     CALL SAIDEC
@@ -397,7 +402,7 @@ CONTINUA:
     PULA_LINHA
     mov LATERAIS,41h
     IMPRIME2:
-    TABFAKE
+    TABFAKE2
     MOV AH,2
     MOV DL,LATERAIS
     INT 21H
