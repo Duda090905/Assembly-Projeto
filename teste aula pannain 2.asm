@@ -28,6 +28,30 @@ ESPAÇO MACRO
 
 ENDM
 
+TAB1 MACRO
+    PUSH AX 
+    PUSH DX
+    MOV AH,2
+    MOV BH,0
+    MOV DH,3
+    MOV DL, 26          ; Coluna central para início da mensagem
+    INT 10H
+    POP DX
+    POP AX
+ENDM
+
+TAB MACRO
+    PUSH AX 
+    PUSH DX
+    MOV AH,2
+    MOV BH,0
+    MOV DH,5
+    MOV DL, 24         ; Coluna central para início da mensagem
+    INT 10H
+    POP DX
+    POP AX
+ENDM
+
 LIMPA MACRO
     mov ah, 06h       ; Função para scroll up
     mov al, 0         ; Número de linhas (0 limpa toda a tela)
@@ -44,13 +68,24 @@ SOBE MACRO
     mov dx, 0         ; Linha 0 (primeira linha)
     int 10h           ; Chamada da interrupção para posicionar o cursor
 ENDM
+TAB1 MACRO
+    PUSH AX 
+    PUSH DX
+    MOV AH,2
+    MOV BH,0
+    MOV DH,4
+    MOV DL, 29          ; Coluna central para início da mensagem
+    INT 10H
+    POP DX
+    POP AX
+ENDM
 
 TAB MACRO
     PUSH AX 
     PUSH DX
     MOV AH, 02H          ; Função para mover o cursor
     MOV BH, 0            ; Página de vídeo 0
-    MOV DH, 4          ; Linha central da tela
+    MOV DH, 6          ; Linha central da tela
     MOV DL, 26           ; Coluna central para início da mensagem
     INT 10H              ; Move o cursor para a posição central
     POP DX
@@ -71,59 +106,59 @@ JOGO0   DB     10 DUP('o')                   ; Linha vazia
 
 
 JOGO1   DB     10 DUP ('.')                                              ;LINHA VAZIA
-        DB     3  DUP ('.'), 4 DUP ('#'), 2  DUP ('.'), '#'              ;LINHA COM ENCOURAÇADO(HORIZONTAL) E PARTE DO SUBMARINO 1(VERTICAL)
-        DB     9  DUP ('.'), '#'                                         ;LINHA COM A OUTRA PARTE DO SUBMARINO 1(VERTICAL)
-        DB     '.', '#', 8 DUP('.')                                      ;LINHA COM PARTE1 DO HIDROAVIÃO 1(VERTICAL)
-        DB     '.', 2 DUP ('#'), 2 DUP ('.'), 3 DUP ('#'), 2 DUP ('.')   ;LINHA COM PARTE2 DO HIDROAVIÃO 1(VERTICAL) E FRAGATA(HORIZONTAL)
-        DB     '.', '#', 8 DUP ('.')                                     ;LINHA COM PARTE3 DO HIDROAVIÃO 1(VERTICAL)
+        DB     3  DUP ('.'), 4 DUP ('1'), 2  DUP ('.'), '3'              ;LINHA COM ENCOURAÇADO(HORIZONTAL) E PARTE DO SUBMARINO 1(VERTICAL)
+        DB     9  DUP ('.'), '3'                                         ;LINHA COM A OUTRA PARTE DO SUBMARINO 1(VERTICAL)
+        DB     '.', '4', 8 DUP('.')                                      ;LINHA COM PARTE1 DO HIDROAVIÃO 1(VERTICAL)
+        DB     '.', 2 DUP ('4'), 2 DUP ('.'), 3 DUP ('2'), 2 DUP ('.')   ;LINHA COM PARTE2 DO HIDROAVIÃO 1(VERTICAL) E FRAGATA(HORIZONTAL)
+        DB     '.', '4', 8 DUP ('.')                                     ;LINHA COM PARTE3 DO HIDROAVIÃO 1(VERTICAL)
         DB     10 DUP ('.')                                              ;LINHA VAZIA
-        DB     6  DUP ('.'), 3 DUP ('#'), '.'                            ;LINHA COM PARTE1 DO HIDROAVIÃO 2(HORIZONTAL)
-        DB     2  DUP ('.'), 2 DUP ('#'), 3 DUP ('.'), '#', 2 DUP ('.')  ;LINHA COM SUBMARINO 2(HORIZONTAL) E PARTE2 DO HIDROAVIÃO 2(HORIZONTAL)
+        DB     6  DUP ('.'), 3 DUP ('4'), '.'                            ;LINHA COM PARTE1 DO HIDROAVIÃO 2(HORIZONTAL)
+        DB     2  DUP ('.'), 2 DUP ('3'), 3 DUP ('.'), '4', 2 DUP ('.')  ;LINHA COM SUBMARINO 2(HORIZONTAL) E PARTE2 DO HIDROAVIÃO 2(HORIZONTAL)
         DB     10 DUP ('.')                                              ;LINHA VAZIA
 
-JOGO2   DB     2 DUP ('#'), 5 DUP('.'), 3 DUP ('#')  
-        DB     8 DUP ('.'), '#', '.'
+JOGO2   DB     2 DUP ('3'), 5 DUP('.'), 3 DUP ('4')  
+        DB     8 DUP ('.'), '4', '.'
         DB     10 DUP ('.') 
         DB     10 DUP ('.') 
-        DB     3 DUP ('#'), 7 DUP ('.')  
-        DB     '.', '#', 4 DUP ('.'), '#', 3 DUP ('.') 
-        DB     6 DUP ('.'), '#', 2 DUP('.'), '#' 
-        DB     9 DUP ('.'), '#'
-        DB     3 DUP ('#'), 6 DUP ('.'), '#' 
-        DB     9 DUP ('.'), '#'
+        DB     3 DUP ('4'), 7 DUP ('.')  
+        DB     '.', '4', 4 DUP ('.'), '3', 3 DUP ('.') 
+        DB     6 DUP ('.'), '3', 2 DUP('.'), '1' 
+        DB     9 DUP ('.'), '1'
+        DB     3 DUP ('2'), 6 DUP ('.'), '1' 
+        DB     9 DUP ('.'), '1'
 
-JOGO3   DB     6 DUP ('.'), 2 DUP ('#'), 2 DUP ('.')
-        DB     3 DUP ('#'), 7 DUP ('.')
-        DB     '.','#', 7 DUP ('.'), '#'
-        DB     9 DUP ('.'), '#' 
-        DB     9 DUP ('.'), '#'   
-        DB     2 DUP ('.'), 4 DUP ('#'), 4 DUP ('.')
+JOGO3   DB     6 DUP ('.'), 2 DUP ('3'), 2 DUP ('.')
+        DB     3 DUP ('4'), 7 DUP ('.')
+        DB     '.','4', 7 DUP ('.'), '2'
+        DB     9 DUP ('.'), '2' 
+        DB     9 DUP ('.'), '2'   
+        DB     2 DUP ('.'), 4 DUP ('1'), 4 DUP ('.')
         DB     10 DUP ('.')
         DB     10 DUP ('.')
-        DB     '#', 7 DUP ('.'), '#', '.'
-        DB     '#', 6 DUP ('.'),3 DUP ('#')
+        DB     '3', 7 DUP ('.'), '4', '.'
+        DB     '3', 6 DUP ('.'),3 DUP ('4')
 
-JOGO4   DB     5 DUP ('.'),'#', 4 DUP ('.')
-        DB     '.', 2 DUP ('#'), 2 DUP ('.'),'#', 4 DUP ('.')
-        DB     5 DUP ('.'),'#', 4 DUP ('.')
-        DB     8 DUP ('.'), '#', '.'
-        DB     7 DUP ('.'), 2 DUP ('#'), '.'  
-        DB     '#', 2 DUP ('.'), '#', 4 DUP ('.'), '#', '.'
-        DB     '#', '.', 3 DUP ('#'), 5 DUP ('.')
-        DB     '#',9 DUP ('.')
-        DB     '#', 5 DUP ('.'), 2 DUP ('#'), 2 DUP ('.')
+JOGO4   DB     5 DUP ('.'),'2', 4 DUP ('.')
+        DB     '.', 2 DUP ('3'), 2 DUP ('.'),'2', 4 DUP ('.')
+        DB     5 DUP ('.'),'2', 4 DUP ('.')
+        DB     8 DUP ('.'), '4', '.'
+        DB     7 DUP ('.'), 2 DUP ('4'), '.'  
+        DB     '1', 2 DUP ('.'), '4', 4 DUP ('.'), '4', '.'
+        DB     '1', '.', 3 DUP ('4'), 5 DUP ('.')
+        DB     '1',9 DUP ('.')
+        DB     '1', 5 DUP ('.'), 2 DUP ('3'), 2 DUP ('.')
         DB     10 DUP ('.')
 
-JOGO5   DB     2 DUP ('#'),8 DUP ('.')
+JOGO5   DB     2 DUP ('3'),8 DUP ('.')
         DB     10 DUP ('.')
-        DB     2 DUP ('.'),'#','.', 3 DUP ('#'), 3 DUP ('.')
-        DB     2 DUP ('.'),'#',2 DUP ('.'), '#', 4 DUP ('.')
-        DB     2 DUP ('.'),'#',7 DUP ('.')  
-        DB     '#','.','#',7 DUP ('.')
-        DB     '#',9 DUP ('.')
-        DB     5 DUP ('.'), '#', 4 DUP ('.')
-        DB     4 DUP ('.'), 2 DUP ('#'), 4 DUP ('.')
-        DB     3 DUP ('#'), 2 DUP ('.'), '#', 4 DUP ('.')
+        DB     2 DUP ('.'),'1','.', 3 DUP ('4'), 3 DUP ('.')
+        DB     2 DUP ('.'),'1',2 DUP ('.'), '4', 4 DUP ('.')
+        DB     2 DUP ('.'),'1',7 DUP ('.')  
+        DB     '3','.','1',7 DUP ('.')
+        DB     '3',9 DUP ('.')
+        DB     5 DUP ('.'), '4', 4 DUP ('.')
+        DB     4 DUP ('.'), 2 DUP ('4'), 4 DUP ('.')
+        DB     3 DUP ('2'), 2 DUP ('.'), '4', 4 DUP ('.')
 
 JOGOESCOLHIDO       DB 10 DUP (?)
                     DB 10 DUP (?)
@@ -157,6 +192,17 @@ ACERTOU DB 10,13,'                               VC ACERTOU UM BARCO!!$'
 
 ERROU  DB 10,13,'                             POXA, NAO FOI DESSA VEZ...$'
 
+
+ENCOURACADO_ACERTO DB 0
+FRAGATA_ACERTO DB 0
+SUBMARINO_ACERTO DB 0
+HIDROAVIAO_ACERTO DB 0
+
+FIMENCOURACADO DB 10,13,"                            VOCE ACERTOU O ENCOURACADO!! $"
+FIMFRAGATA DB 10,13,"                                VOCE ACERTOU O FRAGATA!! $"
+FIMSUBMARINO DB 10,13,"                              VOCE ACERTOU O SUBMARINO!! $"
+FIMHIDROAVIAO DB 10,13,"                             VOCE ACERTOU O HIDROAVIAO!! $"
+
 FINAL DB 10,13,'                                   FIM DE JOGO!$'
 
 DECO DB 10,13,'                          ...............................$'
@@ -164,8 +210,6 @@ DECO DB 10,13,'                          ...............................$'
 LATERAIS DB ?
 
 OPÇÕES DB 13,10,'                         ESCOLHA UM TIPO DE JOGO(1-5):$'
-
-NUMJOGO DB 'J','O','G','O',?,'$'
 
 DENOVO DB 13,10,'           QUER JOGAR NOVAMENTE? DIGITE S PARA SIM E N PARA NAO: $'
 
@@ -198,60 +242,7 @@ PULA_LINHA
 IMPRIMIR COMECO 
 
 CALL @START
-
-
- PUSH CX
-    PULA_LINHA
-    IMPRIMIR OPÇÕES
-
-ESCOLHER_JOGO:
-    MOV AH, 1
-    INT 21h
-    CMP AL, '1'
-    JE ESCOLHA_JOGO1
-    CMP AL, '2'
-    JE ESCOLHA_JOGO2
-    CMP AL, '3'
-    JE ESCOLHA_JOGO3
-    CMP AL, '4'
-    JE ESCOLHA_JOGO4
-    CMP AL, '5'
-    JE ESCOLHA_JOGO5
-
-    ; Entrada inválida: repetir a pergunta
-    IMPRIMIR INCORRETO
-    JMP ESCOLHER_JOGO
-
-ESCOLHA_JOGO1:
-    LEA SI, JOGO1
-    JMP COPIA_JOGO
-
-ESCOLHA_JOGO2:
-    LEA SI, JOGO2
-    JMP COPIA_JOGO
-
-ESCOLHA_JOGO3:
-    LEA SI, JOGO3
-    JMP COPIA_JOGO
-
-ESCOLHA_JOGO4:
-    LEA SI, JOGO4
-    JMP COPIA_JOGO
-
-ESCOLHA_JOGO5:
-    LEA SI, JOGO5
-
-COPIA_JOGO:
-    LEA DI, JOGOESCOLHIDO
-    MOV CX, 100          ; Copiar 100 bytes (10x10)
-    REP MOVSB            ; Copiar conteúdo de [SI] para [DI]
-
-    ; Finaliza a escolha e retorna ao fluxo principal
-    JMP ESCOLHAFIM
-
-ESCOLHAFIM:
-
-
+CALL ESCOLHA
 
 LIMPA
 SOBE 
@@ -297,7 +288,53 @@ COMECA:
 
 @START ENDP
 
+ESCOLHA PROC
+    PULA_LINHA
+    IMPRIMIR OPÇÕES
 
+ESCOLHER_JOGO:
+    MOV AH, 1
+    INT 21h
+    CMP AL, '1'
+    JE ESCOLHA_JOGO1
+    CMP AL, '2'
+    JE ESCOLHA_JOGO2
+    CMP AL, '3'
+    JE ESCOLHA_JOGO3
+    CMP AL, '4'
+    JE ESCOLHA_JOGO4
+    CMP AL, '5'
+    JE ESCOLHA_JOGO5
+
+    ; Entrada inválida: repetir a pergunta
+    IMPRIMIR INCORRETO
+    JMP ESCOLHER_JOGO
+
+ESCOLHA_JOGO1:
+    LEA SI, JOGO1
+    JMP COPIA_JOGO
+
+ESCOLHA_JOGO2:
+    LEA SI, JOGO2
+    JMP COPIA_JOGO
+
+ESCOLHA_JOGO3:
+    LEA SI, JOGO3
+    JMP COPIA_JOGO
+
+ESCOLHA_JOGO4:
+    LEA SI, JOGO4
+    JMP COPIA_JOGO
+
+ESCOLHA_JOGO5:
+    LEA SI, JOGO5
+
+COPIA_JOGO:
+    LEA DI, JOGOESCOLHIDO
+    MOV CX, 100          ; Copiar 100 bytes (10x10)
+    REP MOVSB            ; Copiar conteúdo de [SI] para [DI]
+    RET
+ESCOLHA ENDP
 
 
 @COORDENADAS PROC
@@ -305,7 +342,7 @@ COMECA:
     XOR BX,BX
     MOV CX,CONSTANTE
     PULA_LINHA
-
+    TAB1
 @DECO:
 
     MOV AX,BX
@@ -331,15 +368,16 @@ CONTINUA:
 @IMPRIMIR PROC
     CALL @COORDENADAS
     IMPRIMIR DECO
-
-    PUSH CX
-    XOR BX,BX
-    XOR DL,DL
+    PUSH CX   
     MOV DI,CONSTANTE
     PULA_LINHA
     mov LATERAIS,41h
+    TAB
     IMPRIME2:
     MOV AH,2
+    INC DH
+    MOV DL,26
+    PUSH DX
     MOV DL,LATERAIS
     INT 21H
     ADD LATERAIS,1
@@ -358,12 +396,10 @@ IMPRIME:
     ESPAÇO
     INC SI
     LOOP IMPRIME
-    PUSH DX
     PULA_LINHA
-    POP DX
     ADD BX,CONSTANTE
-    DEC DH
-    
+    POP DX
+    INT 10H
     DEC DI
     JNZ IMPRIME2
     POP CX
@@ -372,7 +408,7 @@ IMPRIME:
 
 RODADAS PROC
 
-    MOV CX,3
+    MOV CX,10
 
 RODADA:
 
@@ -401,11 +437,68 @@ PULA_LINHA
     CALL ENTDEC
     XOR AH,AH  
     MOV SI ,AX
+
 PULA_LINHA 
 
 COMPARA:
-    CMP JOGOESCOLHIDO[BX+SI],'#'
-    JNE VAZIO
+
+    CMP JOGOESCOLHIDO[BX+SI],'1'
+    JE ENCOURACADO
+    CMP JOGOESCOLHIDO[BX+SI],'2'
+    JE FRAGATA 
+    CMP JOGOESCOLHIDO[BX+SI],'3'
+    JE SUBMARINO               
+    CMP JOGOESCOLHIDO[BX+SI],'4'
+    JE  HIDROAVIAO 
+
+    JNE VAZIO 
+
+    ENCOURACADO: 
+
+    INC ENCOURACADO_ACERTO
+    CMP ENCOURACADO_ACERTO,4 
+    JNE SEGUE   
+
+    IMPRIMIR FIMENCOURACADO
+
+    JMP SEGUE    
+
+    FRAGATA:
+
+    INC FRAGATA_ACERTO
+    CMP FRAGATA_ACERTO,3
+    JNE SEGUE   
+
+    IMPRIMIR FIMFRAGATA
+
+    JMP SEGUE   
+
+    SUBMARINO: 
+
+    INC SUBMARINO_ACERTO
+    CMP SUBMARINO_ACERTO,2 
+    JNE SEGUE   
+
+
+    IMPRIMIR FIMSUBMARINO
+
+    
+    MOV SUBMARINO_ACERTO,0
+
+    JMP SEGUE    
+
+HIDROAVIAO: 
+
+    INC HIDROAVIAO_ACERTO
+    CMP HIDROAVIAO_ACERTO,4 
+    JNE SEGUE   
+
+    IMPRIMIR FIMHIDROAVIAO
+    MOV HIDROAVIAO_ACERTO,0
+
+SEGUE:
+
+    PULA_LINHA
     MOV JOGO0[BX+SI],'#'
     CALL @IMPRIMIR
     IMPRIMIR ACERTOU
