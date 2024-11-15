@@ -28,8 +28,34 @@ ESPAÇO MACRO
 
 ENDM
 
+LIMPA MACRO
+    mov ah, 06h       ; Função para scroll up
+    mov al, 0         ; Número de linhas (0 limpa toda a tela)
+    mov bh, 07h       ; Atributo de fundo (branco no preto, por exemplo)
+    mov cx, 0         ; Linha superior da área a ser limpa
+    mov dh, 24        ; Linha inferior (última linha)
+    mov dl, 79        ; Coluna inferior (última coluna)
+    int 10h           ; Chamada da interrupção de vídeo
+ENDM
 
+SOBE MACRO
+    mov ah, 02h       ; Função para mover o cursor
+    mov bh, 0         ; Página do vídeo (0 = página principal)
+    mov dx, 0         ; Linha 0 (primeira linha)
+    int 10h           ; Chamada da interrupção para posicionar o cursor
+ENDM
 
+TAB MACRO
+    PUSH AX 
+    PUSH DX
+    MOV AH, 02H          ; Função para mover o cursor
+    MOV BH, 0            ; Página de vídeo 0
+    MOV DH, 4          ; Linha central da tela
+    MOV DL, 26           ; Coluna central para início da mensagem
+    INT 10H              ; Move o cursor para a posição central
+    POP DX
+    POP AX
+ENDM
 .DATA 
 
 JOGO0   DB     10 DUP('o')                   ; Linha vazia
@@ -101,39 +127,39 @@ JOGO5   DB     2 DUP ('#'),8 DUP ('.')
 
 
 
-INICIAL DB 10,13, "VAMOS JOGAR BATALHA NAVAL!!! $"
+INICIAL DB 10,13, "                         VAMOS JOGAR BATALHA NAVAL!!! $"
 
 INTRODUCAO DB 10,13, "PARA COMECAR O JOGO, TEMOS UM TABULEIRO DE 20 LINHAS E 20 COLUNAS QUE TERAO AS EMBARCACOES $"
 
 INSTRUCOES DB 10,13, "PARA JOGAR, EH NECESSARIO QUE SE INSIRA O VALOR DA LINHA E COLUNA DESEJADO PARA DAR O TIRO E DESCOBRIR SE FOI ATINGIDO UMA EMBARCACAO, PARA GANHAR EH NECESSARIO QUE SE ACHEM TODAS AS EMBARCACOES $"
 
-COMECO DB 10,13, "PRESSIONE (1) PARA COMECAR O JOGO OU (0) PARA FINALIZAR:  $ "
+COMECO DB 10,13, "             PRESSIONE (1) PARA COMECAR O JOGO OU (0) PARA FINALIZAR:  $ "
 
-INCORRETO DB 10,13, "INSIRA UM NUMERO VALIDO PARA PROSSEGUIR:$"
+INCORRETO DB 10,13, "                     INSIRA UM NUMERO VALIDO PARA PROSSEGUIR:$"
 
-LINHAS DB 10,13, "INSIRA A LINHA DESEJADA PARA ATIRAR: $"
+LINHAS DB 10,13, "                       INSIRA A LINHA DESEJADA PARA ATIRAR: $"
 
-COLUNAS DB 10,13, "INSIRA A COLUNA DESEJADA PARA ATIRAR: $"
+COLUNAS DB 10,13, "                      INSIRA A COLUNA DESEJADA PARA ATIRAR: $"
 
 CONSTANTE EQU 10
 
-ACERTOU DB 10,13,'VC ACERTOU UM BARCO!!$'
+ACERTOU DB 10,13,'                               VC ACERTOU UM BARCO!!$'
 
-ERROU  DB 10,13,'POXA, NAO FOI DESSA VEZ...$'
+ERROU  DB 10,13,'                             POXA, NAO FOI DESSA VEZ...$'
 
-FINAL DB 10,13,'FIM DE JOGO!$'
+FINAL DB 10,13,'                                   FIM DE JOGO!$'
 
-DECO DB 10,13,'...............................$'
+DECO DB 10,13,'                          ...............................$'
 
 LATERAIS DB ?
 
-OPÇÕES DB 13,10,'ESCOLHA UM TIPO DE JOGO(1-5):$'
+OPÇÕES DB 13,10,'                         ESCOLHA UM TIPO DE JOGO(1-5):$'
 
 NUMJOGO DB 'J','O','G','O',?,'$'
 
-DENOVO DB 13,10,'QUER JOGAR NOVAMENTE? DIGITE S PARA SIM E N PARA NAO: $'
+DENOVO DB 13,10,'           QUER JOGAR NOVAMENTE? DIGITE S PARA SIM E N PARA NAO: $'
 
-RESTANTE DB 13,10,' NUMERO DE RODADAS RESTANTES : $'
+RESTANTE DB 13,10,'                          NUMERO DE RODADAS RESTANTES: $'
 
 
 .CODE 
@@ -142,9 +168,10 @@ MAIN PROC
 
     MOV AX,@DATA
     MOV DS,AX
-    MOV ES,AX
 
 INICIO:
+LIMPA
+SOBE 
 IMPRIMIR INICIAL
 
 PULA_LINHA    
@@ -161,8 +188,9 @@ IMPRIMIR COMECO
 
 
 CALL @START
-CALL @ESCOLHA
-
+;CALL @ESCOLHA
+LIMPA
+SOBE 
 PULA_LINHA
 
 CALL @IMPRIMIR
@@ -176,7 +204,8 @@ MOV AH,1
 INT 21H
 CMP AL,'S'
 JNE FINALIZA
-PULA_LINHA
+LIMPA
+SOBE 
 JMP INICIO
 FINALIZA:
     IMPRIMIR FINAL
@@ -208,21 +237,26 @@ COMECA:
     PUSH CX
     PULA_LINHA
     IMPRIMIR OPÇÕES
-    MOV AH,1
 PULO:
+    MOV AH,1
     INT 21h
     CMP AL, '1'        ; Verifica se o caractere é um dígito
-    JGE @HUM
+    JNE SALT2
+SALT2:
+    CMP AL, '2'
+    JNE SALT3
+SALT3:
+    CMP AL, '3'
+    JNE SALT4
+SALT4:
+    CMP AL, '4'
+    JNE SALT5
+SALT5:
     CMP AL, '5'
-    JLE @HUM
+    JNE ACAB
+ACAB:
     IMPRIMIR INCORRETO
     JMP PULO
-@HUM:
-    STD 
-    LEA DI,NUMJOGO+4 
-    MOV BYTE PTR [DI],AL
-    ;ou MOV ARR+4,AL
-    POP CX
     RET
 @ESCOLHA ENDP
 
@@ -231,9 +265,6 @@ PULO:
     XOR BX,BX
     MOV CX,CONSTANTE
     PULA_LINHA
-    ESPAÇO
-    ESPAÇO
-    ESPAÇO
 
 @DECO:
 
@@ -281,7 +312,6 @@ CONTINUA:
     MOV AH,2
 
 IMPRIME:
-
     MOV DL,JOGO0[BX+SI]
     INT 21H
     ESPAÇO
@@ -292,6 +322,8 @@ IMPRIME:
     PULA_LINHA
     POP DX
     ADD BX,CONSTANTE
+    DEC DH
+    
     DEC DI
     JNZ IMPRIME2
     POP CX
@@ -300,23 +332,20 @@ IMPRIME:
 
 RODADAS PROC
 
-    MOV CX,9
+    MOV CX,3
 
 RODADA:
 
+MOV AX,CX
+PUSH AX
 PULA_LINHA
 IMPRIMIR RESTANTE
-XOR DX,DX
-
-MOV DX,CX 
-OR DX,30H
-MOV AH,2
-INT 21H
-
+POP AX
+CALL SAIDEC 
 
 PULA_LINHA
 
-IMPRIMIR LINHAS
+    IMPRIMIR LINHAS
     MOV AH,1
     INT 21H
     XOR AH,AH
@@ -326,20 +355,16 @@ IMPRIMIR LINHAS
     MUL BX 
     MOV BX,AX
 
-PROX:
-
 PULA_LINHA 
 
     IMPRIMIR COLUNAS
     CALL ENTDEC
     XOR AH,AH  
     MOV SI ,AX
-
 PULA_LINHA 
 
 COMPARA:
-
-    CMP JOGO1[BX+SI],'#' ;mudar o numero da palavra
+    CMP JOGO1[BX+SI],'#'
     JNE VAZIO
     MOV JOGO0[BX+SI],'#'
     CALL @IMPRIMIR
@@ -347,7 +372,7 @@ COMPARA:
     DEC CX
     CMP CX,0
     JZ SALTA
-    JMP RODADA
+    JMP RODADA 
 
 VAZIO:
     MOV JOGO0[BX+SI],'.'
