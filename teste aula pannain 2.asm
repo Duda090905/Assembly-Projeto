@@ -28,30 +28,6 @@ ESPAÇO MACRO
 
 ENDM
 
-TAB1 MACRO
-    PUSH AX 
-    PUSH DX
-    MOV AH,2
-    MOV BH,0
-    MOV DH,3
-    MOV DL, 26          ; Coluna central para início da mensagem
-    INT 10H
-    POP DX
-    POP AX
-ENDM
-
-TAB MACRO
-    PUSH AX 
-    PUSH DX
-    MOV AH,2
-    MOV BH,0
-    MOV DH,5
-    MOV DL, 24         ; Coluna central para início da mensagem
-    INT 10H
-    POP DX
-    POP AX
-ENDM
-
 LIMPA MACRO
     mov ah, 06h       ; Função para scroll up
     mov al, 0         ; Número de linhas (0 limpa toda a tela)
@@ -67,6 +43,21 @@ SOBE MACRO
     mov bh, 0         ; Página do vídeo (0 = página principal)
     mov dx, 0         ; Linha 0 (primeira linha)
     int 10h           ; Chamada da interrupção para posicionar o cursor
+ENDM
+
+TAB MACRO
+    PUSH CX
+    PUSH AX
+    PUSH DX
+    MOV CX,29
+PRFV:
+    MOV AH,2
+    MOV DL,' '
+    INT 21H
+    LOOP PRFV
+    POP DX
+    POP AX 
+    POP CX
 ENDM
 
 TABFAKE MACRO
@@ -203,7 +194,7 @@ LATERAIS DB ?
 
 OPÇÕES DB 13,10,'                         ESCOLHA UM TIPO DE JOGO(1-5):$'
 
-DENOVO DB 13,10,'           QUER JOGAR NOVAMENTE? DIGITE S PARA SIM E N PARA NAO: $'
+DENOVO DB 13,10,'              QUER JOGAR NOVAMENTE? DIGITE S PARA SIM E N PARA NAO: $'
 
 RESTANTE DB 13,10,'                          NUMERO DE RODADAS RESTANTES: $'
 
@@ -334,9 +325,8 @@ ESCOLHA ENDP
     XOR BX,BX
     MOV CX,CONSTANTE
     PULA_LINHA
-    TABFAKE
+    TAB
 @DECO:
-
     MOV AX,BX
     CALL SAIDEC
     CMP AX,9
@@ -358,9 +348,13 @@ CONTINUA:
 @COORDENADAS ENDP
 
 @IMPRIMIR PROC
+ @IMPRIMIR PROC
     CALL @COORDENADAS
     IMPRIMIR DECO
-    PUSH CX   
+
+    PUSH CX
+    XOR BX,BX
+    XOR DL,DL
     MOV DI,CONSTANTE
     PULA_LINHA
     mov LATERAIS,41h
@@ -379,13 +373,16 @@ CONTINUA:
     MOV AH,2
 
 IMPRIME:
+
     MOV DL,JOGO0[BX+SI]
     INT 21H
     ESPAÇO
     ESPAÇO
     INC SI
     LOOP IMPRIME
+    PUSH DX
     PULA_LINHA
+    POP DX
     ADD BX,CONSTANTE
     DEC DI
     JNZ IMPRIME2
@@ -395,7 +392,7 @@ IMPRIME:
 
 RODADAS PROC
 
-    MOV CX,10
+    MOV CX,2
 
 RODADA:
 
